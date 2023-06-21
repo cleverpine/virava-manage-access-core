@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.cleverpine</groupId>
+    <artifactId>virava-manage-access-core</artifactId>
+    <version>${revision}</version>
+
+    <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
+        <api-file.name>virava-access-management-api.yml</api-file.name>
+
+        <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <virava-backend-common.version>0.0.1-SNAPSHOT</virava-backend-common.version>
+        <spring-boot-starter-web.version>3.1.0</spring-boot-starter-web.version>
+        <springdoc-openapi-ui.version>1.6.15</springdoc-openapi-ui.version>
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+        <spring-data-commons.version>3.0.3</spring-data-commons.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.0.4</springdoc-openapi-starter-webmvc-ui.version>
+        <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <cp-spring-error-util.version>2.0.0</cp-spring-error-util.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.cleverpine</groupId>
+            <artifactId>virava-backend-common</artifactId>
+            <version>${virava-backend-common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot-starter-web.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc-openapi-ui.version}</version>
+        </dependency>
+        <!--OpenAPI Generator Dependencies-->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${jakarta.validation-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>${spring-data-commons.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+        </dependency>
+        <!--OpenAPI Generator Dependencies-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cleverpine</groupId>
+            <artifactId>cp-spring-error-util</artifactId>
+            <version>${cp-spring-error-util.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven-gpg-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--OpenAPI Generator plugin-->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/static/api/${api-file.name}
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>com.cleverpine.viravamanageacesscore.api</apiPackage>
+                            <modelPackage>com.cleverpine.viravamanageacesscore.model</modelPackage>
+                            <configOptions>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useTags>true</useTags>
+                                <openApiNullable>false</openApiNullable>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <useJakartaEe>true</useJakartaEe>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--OpenAPI Generator plugin-->
+        </plugins>
+    </build>
+
+    <name>Virava Access Management</name>
+    <description>Library with core interfaces and setup of Virava User Management</description>
+    <url>https://github.com/cleverpine/virava-manage-access-core</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Radoslav Rashev</name>
+            <email>radoslav.rashev@cleverpine.com</email>
+            <organization>CleverPine</organization>
+            <organizationUrl>https://www.cleverpine.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Aleksandar Yanakiev</name>
+            <email>alexander.yanakiev@cleverpine.com</email>
+            <organization>CleverPine</organization>
+            <organizationUrl>https://www.cleverpine.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <connection>https://github.com/cleverpine/virava-manage-access-core</connection>
+        <developerConnection>git@github.com:cleverpine/virava-manage-access-core.git</developerConnection>
+        <url>https://github.com/cleverpine/virava-manage-access-core</url>
+    </scm>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
