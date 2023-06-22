@@ -9,6 +9,7 @@ import com.cleverpine.viravamanageacesscore.model.AMCreateResourceRequest;
 import com.cleverpine.viravamanageacesscore.model.AMResource;
 import com.cleverpine.viravamanageacesscore.model.AMResourceListResponse;
 import com.cleverpine.viravamanageacesscore.model.AMResourceResponse;
+import com.cleverpine.viravamanageacesscore.principal.AMUserPrincipalProvider;
 import com.cleverpine.viravamanageacesscore.service.contract.resource.AMResourceService;
 import com.cleverpine.viravamanageacesscore.service.contract.user.AMUserService;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class AMResourceController implements AmResourceApi {
     private final AMResourceService amResourceService;
     private final AMResourceMapper amResourceMapper;
     private final AMUserService amUserService;
+    private final AMUserPrincipalProvider amUserPrincipalProvider;
     private final ResourceHandlerFactory resourceHandlerFactory;
     private final ResponseEntityUtil<AMResourceResponse, AMResource> amResourceResponseEntityUtil;
     private final ListResponseEntityUtil<AMResourceListResponse, AMResource> amResourceListResponseEntityUtil;
@@ -27,12 +29,14 @@ public class AMResourceController implements AmResourceApi {
     public AMResourceController(AMResourceService amResourceService,
                                 AMResourceMapper amResourceMapper,
                                 AMUserService amUserService,
+                                AMUserPrincipalProvider amUserPrincipalProvider,
                                 ResourceHandlerFactory resourceHandlerFactory,
                                 ResponseEntityUtil<AMResourceResponse, AMResource> amResourceResponseEntityUtil,
                                 ListResponseEntityUtil<AMResourceListResponse, AMResource> amResourceListResponseEntityUtil) {
         this.amResourceService = amResourceService;
         this.amResourceMapper = amResourceMapper;
         this.amUserService = amUserService;
+        this.amUserPrincipalProvider = amUserPrincipalProvider;
         this.resourceHandlerFactory = resourceHandlerFactory;
         this.amResourceResponseEntityUtil = amResourceResponseEntityUtil;
         this.amResourceListResponseEntityUtil = amResourceListResponseEntityUtil;
@@ -61,7 +65,9 @@ public class AMResourceController implements AmResourceApi {
 
     @Override
     public ResponseEntity<AMResourceListResponse> getUserResourcesByName(String username, String resourceName) {
-        var user = amUserService.getByUsername(username);
+        var username2 = amUserPrincipalProvider.getUsername();
+
+        var user = amUserService.getByUsername(username2);
 
         var result = resourceHandlerFactory.getHandler(resourceName).getResources(user);
 
