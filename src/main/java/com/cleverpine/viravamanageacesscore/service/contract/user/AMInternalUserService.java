@@ -83,7 +83,7 @@ public class AMInternalUserService {
         var allowedUserIds = getAllowedUsernames();
 
         if (!allowedUserIds.contains(username)) {
-            throw new BadRequestException(String.format("Current user not allowed to update user with id %d", username));
+            throw new BadRequestException(String.format("Current user not allowed to update user with id %s", username));
         }
     }
 
