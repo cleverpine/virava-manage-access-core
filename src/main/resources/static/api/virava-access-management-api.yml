@@ -215,7 +215,7 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  /api/access-management/user/resource/{resourceName}:
+  /api/access-management/users/{username}/resource/{resourceName}:
     get:
       summary: Get user's resources by name
       description: This is a method for retrieving all resources by name for a specific user
@@ -225,6 +225,12 @@ paths:
       security:
         - BearerAuth: [ ]
       parameters:
+        - name: username
+          in: path
+          required: true
+          description: This is the username
+          schema:
+            type: string
         - name: resourceName
           in: path
           required: true
