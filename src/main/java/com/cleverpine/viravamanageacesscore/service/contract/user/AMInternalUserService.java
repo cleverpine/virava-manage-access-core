@@ -4,6 +4,7 @@ import com.cleverpine.cpspringerrorutil.exception.BadRequestException;
 import com.cleverpine.viravabackendcommon.dto.Resource;
 import com.cleverpine.viravabackendcommon.dto.User;
 import com.cleverpine.viravamanageacesscore.factory.ResourceHandlerFactory;
+import com.cleverpine.viravamanageacesscore.handler.ResourcePermissionHandler;
 import com.cleverpine.viravamanageacesscore.handler.UserHandler;
 import com.cleverpine.viravamanageacesscore.mapper.AMUserMapper;
 import com.cleverpine.viravamanageacesscore.model.AMUserInfo;
@@ -18,17 +19,19 @@ public class AMInternalUserService {
     private final AMUserService amUserService;
     private final AMUserMapper amUserMapper;
     private final UserHandler userHandler;
+    private final ResourcePermissionHandler resourcePermissionHandler;
     private final AMUserPrincipalProvider amUserPrincipalProvider;
     private final ResourceHandlerFactory resourceHandlerFactory;
 
     public AMInternalUserService(AMUserService amUserService,
                                  AMUserMapper amUserMapper,
                                  UserHandler userHandler,
-                                 AMUserPrincipalProvider amUserPrincipalProvider,
+                                 ResourcePermissionHandler resourcePermissionHandler, AMUserPrincipalProvider amUserPrincipalProvider,
                                  ResourceHandlerFactory resourceHandlerFactory) {
         this.amUserService = amUserService;
         this.amUserMapper = amUserMapper;
         this.userHandler = userHandler;
+        this.resourcePermissionHandler = resourcePermissionHandler;
         this.amUserPrincipalProvider = amUserPrincipalProvider;
         this.resourceHandlerFactory = resourceHandlerFactory;
     }
@@ -36,10 +39,16 @@ public class AMInternalUserService {
     public List<User> getAllUsers() {
         var filteredUsernames = getAllowedUsernames();
 
-        return amUserService.getAll()
+        var users = amUserService.getAll()
                 .stream()
                 .filter(fetchedUser -> filteredUsernames.contains(fetchedUser.getUsername()))
                 .toList();
+        
+        resourcePermissionHandler.mapResourcePermissions(users);
+
+        users.forEach(amUserMapper::mapResourcesInData);
+
+        return users;
     }
 
     public User getUser(Long id) {

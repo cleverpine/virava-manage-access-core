@@ -46,6 +46,7 @@ public class AMUserController implements AmUserApi {
     @Override
     public ResponseEntity<AMUserListResponse> getAllUsers() {
         var result = amInternalUserService.getAllUsers();
+
         return amUserListResponseEntityUtil.ok(amUserMapper.userListToAMUserList(result));
     }
 

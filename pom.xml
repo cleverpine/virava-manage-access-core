@@ -9,7 +9,7 @@
     <version>${revision}</version>
 
     <properties>
-        <revision>0.0.1</revision>
+        <revision>0.0.3</revision>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,7 +19,7 @@
         <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
         <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <virava-backend-common.version>0.0.1</virava-backend-common.version>
+        <virava-backend-common.version>0.0.2</virava-backend-common.version>
         <spring-boot-starter-web.version>3.1.0</spring-boot-starter-web.version>
         <springdoc-openapi-ui.version>1.6.15</springdoc-openapi-ui.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>

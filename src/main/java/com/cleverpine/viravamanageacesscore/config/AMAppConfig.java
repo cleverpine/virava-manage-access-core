@@ -9,6 +9,7 @@ import com.cleverpine.viravamanageacesscore.controller.user.AMUserController;
 import com.cleverpine.viravamanageacesscore.controller.userpermission.AMUserPermissionController;
 import com.cleverpine.viravamanageacesscore.factory.ResourceHandlerFactory;
 import com.cleverpine.viravamanageacesscore.handler.ResourceHandler;
+import com.cleverpine.viravamanageacesscore.handler.ResourcePermissionHandler;
 import com.cleverpine.viravamanageacesscore.handler.UserHandler;
 import com.cleverpine.viravamanageacesscore.init.ViravaAccessManagementInitializer;
 import com.cleverpine.viravamanageacesscore.mapper.*;
@@ -20,6 +21,7 @@ import com.cleverpine.viravamanageacesscore.service.contract.user.AMInternalUser
 import com.cleverpine.viravamanageacesscore.service.contract.user.AMUserService;
 import com.cleverpine.viravamanageacesscore.service.contract.userpermission.AMUserPermissionService;
 import com.cleverpine.viravamanageacesscore.service.mock.handler.ResourceHandlerMockImpl;
+import com.cleverpine.viravamanageacesscore.service.mock.handler.ResourcePermissionHandlerMockImpl;
 import com.cleverpine.viravamanageacesscore.service.mock.handler.UserHandlerMockImpl;
 import com.cleverpine.viravamanageacesscore.service.mock.permission.AMPermissionServiceMockImpl;
 import com.cleverpine.viravamanageacesscore.service.mock.resource.AMResourceServiceMockImpl;
@@ -79,6 +81,12 @@ public class AMAppConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean
+    public ResourcePermissionHandler resourcePermissionHandler() {
+        return new ResourcePermissionHandlerMockImpl();
+    }
+
+    @Bean
     public AMUserMapper amUserMapper() {
         return new AMUserMapperImpl();
     }
@@ -101,9 +109,10 @@ public class AMAppConfig {
     @Bean
     public AMInternalUserService amInternalUserService(AMUserService amUserService, AMUserMapper amUserMapper,
                                                        UserHandler userHandler,
+                                                       ResourcePermissionHandler resourcePermissionHandler,
                                                        AMUserPrincipalProvider amUserPrincipalProvider,
                                                        ResourceHandlerFactory resourceHandlerFactory) {
-        return new AMInternalUserService(amUserService, amUserMapper, userHandler, amUserPrincipalProvider, resourceHandlerFactory);
+        return new AMInternalUserService(amUserService, amUserMapper, userHandler, resourcePermissionHandler, amUserPrincipalProvider, resourceHandlerFactory);
     }
 
     @Bean
