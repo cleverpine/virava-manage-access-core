@@ -64,10 +64,10 @@ public class AMResourceController implements AmResourceApi {
     }
 
     @Override
-    public ResponseEntity<AMResourceListResponse> getUserResourcesByName(String username, String resourceName) {
-        var username2 = amUserPrincipalProvider.getUsername();
+    public ResponseEntity<AMResourceListResponse> getUserResourcesByName(String resourceName) {
+        var username = amUserPrincipalProvider.getUsername();
 
-        var user = amUserService.getByUsername(username2);
+        var user = amUserService.getByUsername(username);
 
         var result = resourceHandlerFactory.getHandler(resourceName).getResources(user);
 

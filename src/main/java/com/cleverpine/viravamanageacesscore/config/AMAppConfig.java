@@ -16,7 +16,7 @@ import com.cleverpine.viravamanageacesscore.model.*;
 import com.cleverpine.viravamanageacesscore.principal.AMUserPrincipalProvider;
 import com.cleverpine.viravamanageacesscore.service.contract.permission.AMPermissionService;
 import com.cleverpine.viravamanageacesscore.service.contract.resource.AMResourceService;
-import com.cleverpine.viravamanageacesscore.service.contract.user.AMInternalUserService;
+import com.cleverpine.viravamanageacesscore.service.impl.AMInternalUserService;
 import com.cleverpine.viravamanageacesscore.service.contract.user.AMUserService;
 import com.cleverpine.viravamanageacesscore.service.contract.userpermission.AMUserPermissionService;
 import com.cleverpine.viravamanageacesscore.service.mock.handler.ResourceHandlerMockImpl;
@@ -99,20 +99,16 @@ public class AMAppConfig {
     }
 
     @Bean
-    public AMInternalUserService amInternalUserService(AMUserService amUserService, AMUserMapper amUserMapper,
+    public AMInternalUserService amInternalUserService(AMUserService amUserService,
                                                        UserHandler userHandler,
                                                        AMUserPrincipalProvider amUserPrincipalProvider,
                                                        ResourceHandlerFactory resourceHandlerFactory) {
-        return new AMInternalUserService(amUserService, amUserMapper, userHandler, amUserPrincipalProvider, resourceHandlerFactory);
+        return new AMInternalUserService(amUserService, userHandler, amUserPrincipalProvider, resourceHandlerFactory);
     }
 
     @Bean
     public AMUserController amUserController(
-//            AMUserService amUserService,
             AMUserMapper amUserMapper,
-//            UserHandler userHandler,
-//            AMUserPrincipalProvider amUserPrincipalProvider,
-//            ResourceHandlerFactory resourceHandlerFactory,
             AMInternalUserService amInternalUserService,
             ListResponseEntityUtil<AMUserListResponse, AMUser> amUserListResponseEntityUtil,
             ResponseEntityUtil<AMUserInfoResponse, AMUserInfo> amUserInfoResponseEntityUtil) {
@@ -134,12 +130,10 @@ public class AMAppConfig {
             GenericResponseEntityUtil amGenericResponseEntityUtil,
             AMUserPermissionMapper amUserPermissionMapper,
             AMUserPermissionService amUserPermissionService,
-//            AMUserService amUserService,
             AMInternalUserService amInternalUserService,
             ResourceHandlerFactory resourceHandlerFactory) {
-        return new AMUserPermissionController(
-                amGenericResponseEntityUtil, amUserPermissionMapper, amUserPermissionService, amInternalUserService,
-                resourceHandlerFactory);
+        return new AMUserPermissionController(amGenericResponseEntityUtil, amUserPermissionMapper, amUserPermissionService,
+                amInternalUserService, resourceHandlerFactory);
     }
 
     @Bean
@@ -151,9 +145,7 @@ public class AMAppConfig {
             AMUserPrincipalProvider amUserPrincipalProvider,
             ListResponseEntityUtil<AMResourceListResponse, AMResource> amResourceListResponseEntityUtil,
             ResponseEntityUtil<AMResourceResponse, AMResource> amResourceResponseEntityUtil) {
-        return new AMResourceController(
-                amResourceService, amResourceMapper, amUserService, amUserPrincipalProvider, resourceHandlerFactory,
-                amResourceResponseEntityUtil,
-                amResourceListResponseEntityUtil);
+        return new AMResourceController(amResourceService, amResourceMapper, amUserService, amUserPrincipalProvider, resourceHandlerFactory,
+                amResourceResponseEntityUtil, amResourceListResponseEntityUtil);
     }
 }
