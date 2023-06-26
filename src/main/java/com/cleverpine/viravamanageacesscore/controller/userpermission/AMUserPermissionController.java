@@ -1,6 +1,7 @@
 package com.cleverpine.viravamanageacesscore.controller.userpermission;
 
 import com.cleverpine.cpspringerrorutil.util.GenericResponseEntityUtil;
+import com.cleverpine.viravamanageacesscore.annotation.AMTransactional;
 import com.cleverpine.viravamanageacesscore.api.AmUserPermissionApi;
 import com.cleverpine.viravamanageacesscore.factory.ResourceHandlerFactory;
 import com.cleverpine.viravamanageacesscore.mapper.AMUserPermissionMapper;
@@ -39,6 +40,7 @@ public class AMUserPermissionController implements AmUserPermissionApi {
     }
 
     @Override
+    @AMTransactional
     public ResponseEntity<Void> assignResourcePermission(Long userId, String resourceName,
                                                          AMResourcePermission amResourcePermission) {
         var user = amInternalUserService.getUser(userId);

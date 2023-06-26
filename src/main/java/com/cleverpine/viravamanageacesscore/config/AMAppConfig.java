@@ -3,6 +3,7 @@ package com.cleverpine.viravamanageacesscore.config;
 import com.cleverpine.cpspringerrorutil.util.GenericResponseEntityUtil;
 import com.cleverpine.cpspringerrorutil.util.ListResponseEntityUtil;
 import com.cleverpine.cpspringerrorutil.util.ResponseEntityUtil;
+import com.cleverpine.viravamanageacesscore.aspect.TransactionalAspect;
 import com.cleverpine.viravamanageacesscore.controller.permission.AMPermissionController;
 import com.cleverpine.viravamanageacesscore.controller.resource.AMResourceController;
 import com.cleverpine.viravamanageacesscore.controller.user.AMUserController;
@@ -17,9 +18,9 @@ import com.cleverpine.viravamanageacesscore.model.*;
 import com.cleverpine.viravamanageacesscore.principal.AMUserPrincipalProvider;
 import com.cleverpine.viravamanageacesscore.service.contract.permission.AMPermissionService;
 import com.cleverpine.viravamanageacesscore.service.contract.resource.AMResourceService;
-import com.cleverpine.viravamanageacesscore.service.impl.AMInternalUserService;
 import com.cleverpine.viravamanageacesscore.service.contract.user.AMUserService;
 import com.cleverpine.viravamanageacesscore.service.contract.userpermission.AMUserPermissionService;
+import com.cleverpine.viravamanageacesscore.service.impl.AMInternalUserService;
 import com.cleverpine.viravamanageacesscore.service.mock.handler.ResourceHandlerMockImpl;
 import com.cleverpine.viravamanageacesscore.service.mock.handler.ResourcePermissionHandlerMockImpl;
 import com.cleverpine.viravamanageacesscore.service.mock.handler.UserHandlerMockImpl;
@@ -72,6 +73,12 @@ public class AMAppConfig {
     @ConditionalOnMissingBean
     public ResourceHandlerFactory resourceHandlerFactory(ResourceHandler<?>... resourceHandlers) {
         return new ResourceHandlerFactory(List.of(resourceHandlers));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public TransactionalAspect transactionalAspect() {
+        return new TransactionalAspect();
     }
 
     @Bean

@@ -3,6 +3,7 @@ package com.cleverpine.viravamanageacesscore.service.contract.user;
 import com.cleverpine.cpspringerrorutil.exception.BadRequestException;
 import com.cleverpine.viravabackendcommon.dto.Resource;
 import com.cleverpine.viravabackendcommon.dto.User;
+import com.cleverpine.viravamanageacesscore.annotation.AMTransactional;
 import com.cleverpine.viravamanageacesscore.factory.ResourceHandlerFactory;
 import com.cleverpine.viravamanageacesscore.handler.ResourcePermissionHandler;
 import com.cleverpine.viravamanageacesscore.handler.UserHandler;
@@ -57,31 +58,31 @@ public class AMInternalUserService {
         return user;
     }
 
+    @AMTransactional
     public void deleteUser(Long id) {
         var user = amUserService.getById(id);
 
         validateUserCanModifyUser(user.getUsername());
 
-        //TODO add transaction management
         amUserService.delete(id);
         var userDeleted = userHandler.delete(user.getUsername());
     }
 
+    @AMTransactional
     public User createUser(AMUserInfo amUserInfo) {
         var user = amUserMapper.amUserInfoToUser(amUserInfo);
 
-        //TODO add transaction management
         var result = amUserService.create(user);
         var userCreated = userHandler.create(user);
 
         return result;
     }
 
+    @AMTransactional
     public User updateUser(Long id, AMUserInfo amUserInfo) {
         var user = amUserService.getById(id);
         var userWithUpdates = amUserMapper.amUserInfoToUser(amUserInfo);
 
-        //TODO add transaction management
         var result = amUserService.update(id, userWithUpdates);
         var userUpdated = userHandler.update(user.getUsername(), userWithUpdates);
 

@@ -29,6 +29,7 @@
         <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <cp-spring-error-util.version>2.0.0</cp-spring-error-util.version>
+        <aspectjweaver.version>1.9.19</aspectjweaver.version>
     </properties>
 
     <dependencies>
@@ -78,6 +79,11 @@
             <groupId>com.cleverpine</groupId>
             <artifactId>cp-spring-error-util</artifactId>
             <version>${cp-spring-error-util.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectjweaver.version}</version>
         </dependency>
     </dependencies>
 
