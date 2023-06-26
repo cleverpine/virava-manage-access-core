@@ -45,7 +45,6 @@ public class AMUserPermissionController implements AmUserPermissionApi {
                                                          AMResourcePermission amResourcePermission) {
         var user = amInternalUserService.getUser(userId);
 
-        //TODO add transaction management
         var resourcePermission = amUserPermissionMapper.amResourcePermissionToResourcePermission(amResourcePermission);
         amUserPermissionService.assignResourcePermission(userId, resourceName, resourcePermission);
 

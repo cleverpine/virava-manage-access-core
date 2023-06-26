@@ -115,10 +115,13 @@ public class AMAppConfig {
 
     @Bean
     public AMInternalUserService amInternalUserService(AMUserService amUserService,
+                                                       AMUserMapper amUserMapper,
                                                        UserHandler userHandler,
+                                                       ResourcePermissionHandler resourcePermissionHandler,
                                                        AMUserPrincipalProvider amUserPrincipalProvider,
                                                        ResourceHandlerFactory resourceHandlerFactory) {
-        return new AMInternalUserService(amUserService, userHandler, amUserPrincipalProvider, resourceHandlerFactory);
+        return new AMInternalUserService(amUserService, amUserMapper, userHandler, resourcePermissionHandler, amUserPrincipalProvider,
+                resourceHandlerFactory);
     }
 
     @Bean
