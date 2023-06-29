@@ -39,7 +39,7 @@ public class AMUserPermissionServiceMockImpl implements AMUserPermissionService 
     }
 
     @Override
-    public void deletePermissionByResourceAndId(String resourceName, long id) {
+    public void deletePermissionByResourceNameAndResourceId(String resourceName, long resourceId) {
         // delete user permission by resource and id
     }
 }

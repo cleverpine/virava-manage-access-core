@@ -18,5 +18,5 @@ public interface AMUserPermissionService {
 
     void deletePermissionsByUserId(long userId);
 
-    void deletePermissionByResourceAndId(String resourceName, long id);
+    void deletePermissionByResourceNameAndResourceId(String resourceName, long resourceId);
 }
