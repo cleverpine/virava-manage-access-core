@@ -8,7 +8,6 @@ import com.cleverpine.viravamanageacesscore.factory.ResourceHandlerFactory;
 import com.cleverpine.viravamanageacesscore.handler.ResourcePermissionHandler;
 import com.cleverpine.viravamanageacesscore.handler.UserHandler;
 import com.cleverpine.viravamanageacesscore.mapper.AMUserMapper;
-import com.cleverpine.viravamanageacesscore.model.AMUserInfo;
 import com.cleverpine.viravamanageacesscore.principal.AMUserPrincipalProvider;
 import com.cleverpine.viravamanageacesscore.service.contract.user.AMUserService;
 
