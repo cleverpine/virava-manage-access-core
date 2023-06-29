@@ -25,4 +25,9 @@ public class AMPermissionServiceMockImpl implements AMPermissionService {
     public boolean checkIfExist(long id) {
         return true;
     }
+
+    @Override
+    public Permission get(long id) {
+        return new Permission(id, "mockPermission");
+    }
 }

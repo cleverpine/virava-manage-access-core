@@ -9,5 +9,7 @@ public interface AMPermissionService {
 
     Permission create(Permission permission);
 
+    Permission get(long id);
+
     boolean checkIfExist(long id);
 }
