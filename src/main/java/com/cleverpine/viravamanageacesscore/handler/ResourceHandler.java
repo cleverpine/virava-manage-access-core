@@ -35,7 +35,7 @@ public interface ResourceHandler<ResourceDTO> {
 
     Function<ResourceDTO, Resource> mapToResource();
 
-    boolean assignResourcePermission(User user, ResourcePermission resourcePermission);
+    ResourcePermission assignResourcePermission(User user, ResourcePermission resourcePermission);
 
     String getResourceName();
 }

@@ -38,8 +38,8 @@ public class ResourceHandlerMockImpl implements ResourceHandler<Resource> {
     }
 
     @Override
-    public boolean assignResourcePermission(User user, ResourcePermission resourcePermission) {
-        return true;
+    public ResourcePermission assignResourcePermission(User user, ResourcePermission resourcePermission) {
+        return resourcePermission;
     }
 
     @Override

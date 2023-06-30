@@ -4,9 +4,9 @@ import com.cleverpine.viravabackendcommon.dto.User;
 
 public interface UserHandler {
 
-    boolean create(User user);
+    User create(User user);
 
-    boolean update(String username, User user);
+    User update(String username, User user);
 
     boolean delete(String username);
 }

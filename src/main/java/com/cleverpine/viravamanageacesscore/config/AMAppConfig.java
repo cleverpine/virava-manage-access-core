@@ -115,13 +115,14 @@ public class AMAppConfig {
 
     @Bean
     public AMInternalUserService amInternalUserService(AMUserService amUserService,
+                                                       AMPermissionService amPermissionService,
                                                        AMUserMapper amUserMapper,
                                                        UserHandler userHandler,
                                                        ResourcePermissionHandler resourcePermissionHandler,
                                                        AMUserPrincipalProvider amUserPrincipalProvider,
                                                        ResourceHandlerFactory resourceHandlerFactory) {
-        return new AMInternalUserService(amUserService, amUserMapper, userHandler, resourcePermissionHandler, amUserPrincipalProvider,
-                resourceHandlerFactory);
+        return new AMInternalUserService(amUserService, amPermissionService, amUserMapper, userHandler, resourcePermissionHandler,
+                amUserPrincipalProvider, resourceHandlerFactory);
     }
 
     @Bean
@@ -147,11 +148,8 @@ public class AMAppConfig {
     public AMUserPermissionController amUserPermissionController(
             GenericResponseEntityUtil amGenericResponseEntityUtil,
             AMUserPermissionMapper amUserPermissionMapper,
-            AMUserPermissionService amUserPermissionService,
-            AMInternalUserService amInternalUserService,
-            ResourceHandlerFactory resourceHandlerFactory) {
-        return new AMUserPermissionController(amGenericResponseEntityUtil, amUserPermissionMapper, amUserPermissionService,
-                amInternalUserService, resourceHandlerFactory);
+            AMInternalUserService amInternalUserService) {
+        return new AMUserPermissionController(amGenericResponseEntityUtil, amUserPermissionMapper, amInternalUserService);
     }
 
     @Bean

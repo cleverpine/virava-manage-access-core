@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 public class UserHandlerMockImpl implements UserHandler {
 
     @Override
-    public boolean create(User user) {
-        return true;
+    public User create(User user) {
+        return user;
     }
 
     @Override
-    public boolean update(String username, User user) {
-        return true;
+    public User update(String username, User user) {
+        return user;
     }
 
     @Override
