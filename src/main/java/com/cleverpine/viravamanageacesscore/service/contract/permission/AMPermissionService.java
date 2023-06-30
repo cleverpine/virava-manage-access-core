@@ -11,5 +11,7 @@ public interface AMPermissionService {
 
     Permission get(long id);
 
+    Permission getByName(String name);
+
     boolean checkIfExist(long id);
 }
