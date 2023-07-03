@@ -12,8 +12,8 @@ public class ResourcePermissionHandlerMockImpl implements ResourcePermissionHand
     public Map<String, Map<String, Resource>> getAllResources(List<String> resources) {
         var result = new HashMap<String, Map<String, Resource>>();
 
-        var resource1 = new Resource(1L, "resource1");
-        result.put("resource1", Map.of("resource1", resource1));
+        var resource1 = new Resource(1L, "resource1", "Resource 1");
+        result.put("resource1", Map.of(resource1.getName(), resource1));
 
         return result;
     }
