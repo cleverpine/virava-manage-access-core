@@ -557,6 +557,9 @@ components:
         name:
           type: string
           minLength: 1
+        displayName:
+          type: string
+          minLength: 1
     AMResourceResponse:
       type: object
       properties:
@@ -578,6 +581,9 @@ components:
       type: object
       properties:
         name:
+          type: string
+          minLength: 1
+        displayName:
           type: string
           minLength: 1
   responses:

@@ -3,6 +3,7 @@ package com.cleverpine.viravamanageacesscore.service.impl;
 import com.cleverpine.cpspringerrorutil.exception.BadRequestException;
 import com.cleverpine.viravabackendcommon.dto.Resource;
 import com.cleverpine.viravabackendcommon.dto.ResourcePermission;
+import com.cleverpine.viravabackendcommon.dto.ResourcePermissions;
 import com.cleverpine.viravabackendcommon.dto.User;
 import com.cleverpine.viravamanageacesscore.annotation.AMTransactional;
 import com.cleverpine.viravamanageacesscore.factory.ResourceHandlerFactory;
@@ -11,9 +12,11 @@ import com.cleverpine.viravamanageacesscore.handler.UserHandler;
 import com.cleverpine.viravamanageacesscore.mapper.AMUserMapper;
 import com.cleverpine.viravamanageacesscore.principal.AMUserPrincipalProvider;
 import com.cleverpine.viravamanageacesscore.service.contract.permission.AMPermissionService;
+import com.cleverpine.viravamanageacesscore.service.contract.resource.AMResourceService;
 import com.cleverpine.viravamanageacesscore.service.contract.user.AMUserService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,6 +24,7 @@ public class AMInternalUserService {
 
     private final AMUserService amUserService;
     private final AMPermissionService amPermissionService;
+    private final AMResourceService amResourceService;
     private final AMUserMapper amUserMapper;
     private final UserHandler userHandler;
     private final ResourcePermissionHandler resourcePermissionHandler;
@@ -29,6 +33,7 @@ public class AMInternalUserService {
 
     public AMInternalUserService(AMUserService amUserService,
                                  AMPermissionService amPermissionService,
+                                 AMResourceService amResourceService,
                                  AMUserMapper amUserMapper,
                                  UserHandler userHandler,
                                  ResourcePermissionHandler resourcePermissionHandler,
@@ -36,6 +41,7 @@ public class AMInternalUserService {
                                  ResourceHandlerFactory resourceHandlerFactory) {
         this.amUserService = amUserService;
         this.amPermissionService = amPermissionService;
+        this.amResourceService = amResourceService;
         this.amUserMapper = amUserMapper;
         this.userHandler = userHandler;
         this.resourcePermissionHandler = resourcePermissionHandler;
@@ -51,9 +57,7 @@ public class AMInternalUserService {
                 .filter(fetchedUser -> allowedUsernames.contains(fetchedUser.getUsername()))
                 .toList();
 
-        resourcePermissionHandler.mapResourcePermissions(users);
-
-        users.forEach(amUserMapper::mapResourcesInData);
+        enrichUsers(users);
 
         return users;
     }
@@ -104,6 +108,16 @@ public class AMInternalUserService {
         this.updateUser(userId, user);
     }
 
+    private void enrichUsers(List<User> users) {
+        resourcePermissionHandler.mapResourcePermissions(users);
+        enrichUserData(users);
+    }
+
+    private void enrichUserData(List<User> users) {
+        var resourceNameDisplayNameMap = createResourceNameDisplayNameMap();
+        users.forEach(user -> amUserMapper.mapResourcesInData(user, resourceNameDisplayNameMap));
+    }
+
     private void validateUserActionAllowed(String username) {
         var allowedUsernames = getAllowedUsernames();
 
@@ -119,5 +133,11 @@ public class AMInternalUserService {
                 .stream()
                 .map(Resource::getName)
                 .collect(Collectors.toSet());
+    }
+
+    private Map<String, String> createResourceNameDisplayNameMap() {
+        return amResourceService.getAll()
+                .stream()
+                .collect(Collectors.toMap(Resource::getName, Resource::getDisplayName));
     }
 }
