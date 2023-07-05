@@ -1,13 +1,12 @@
 package com.cleverpine.viravamanageacesscore.controller.user;
 
-import com.cleverpine.cpspringerrorutil.util.ListResponseEntityUtil;
 import com.cleverpine.cpspringerrorutil.util.ResponseEntityUtil;
 import com.cleverpine.viravamanageacesscore.api.AmUserApi;
 import com.cleverpine.viravamanageacesscore.mapper.AMUserMapper;
-import com.cleverpine.viravamanageacesscore.model.AMUser;
 import com.cleverpine.viravamanageacesscore.model.AMUserInfo;
 import com.cleverpine.viravamanageacesscore.model.AMUserInfoResponse;
-import com.cleverpine.viravamanageacesscore.model.AMUserListResponse;
+import com.cleverpine.viravamanageacesscore.model.AMUsersTableData;
+import com.cleverpine.viravamanageacesscore.model.AMUsersTableDataResponse;
 import com.cleverpine.viravamanageacesscore.service.impl.AMInternalUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,24 +16,24 @@ public class AMUserController implements AmUserApi {
 
     private final AMUserMapper amUserMapper;
     private final AMInternalUserService amInternalUserService;
-    private final ListResponseEntityUtil<AMUserListResponse, AMUser> amUserListResponseEntityUtil;
+    private final ResponseEntityUtil<AMUsersTableDataResponse, AMUsersTableData> amUsersTableDataResponseEntityUtil;
     private final ResponseEntityUtil<AMUserInfoResponse, AMUserInfo> amUserInfoResponseEntityUtil;
 
     public AMUserController(
             AMUserMapper amUserMapper,
             AMInternalUserService amInternalUserService,
-            ListResponseEntityUtil<AMUserListResponse, AMUser> amUserListResponseEntityUtil,
+            ResponseEntityUtil<AMUsersTableDataResponse, AMUsersTableData> amUsersTableDataResponseEntityUtil,
             ResponseEntityUtil<AMUserInfoResponse, AMUserInfo> amUserInfoResponseEntityUtil) {
         this.amInternalUserService = amInternalUserService;
         this.amUserMapper = amUserMapper;
-        this.amUserListResponseEntityUtil = amUserListResponseEntityUtil;
+        this.amUsersTableDataResponseEntityUtil = amUsersTableDataResponseEntityUtil;
         this.amUserInfoResponseEntityUtil = amUserInfoResponseEntityUtil;
     }
 
     @Override
-    public ResponseEntity<AMUserListResponse> getAllUsers() {
-        var users = amInternalUserService.getAllUsers();
-        return amUserListResponseEntityUtil.ok(amUserMapper.userListToAMUserList(users));
+    public ResponseEntity<AMUsersTableDataResponse> getAllUsers() {
+        var amUsersTableDataDTO = amInternalUserService.getUsersTableData();
+        return amUsersTableDataResponseEntityUtil.ok(amUserMapper.amUsersTableDataDTOToAMUsersTableData(amUsersTableDataDTO));
     }
 
     @Override

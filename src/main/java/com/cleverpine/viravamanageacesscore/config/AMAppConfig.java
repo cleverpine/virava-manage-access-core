@@ -122,17 +122,17 @@ public class AMAppConfig {
                                                        ResourcePermissionHandler resourcePermissionHandler,
                                                        AMUserPrincipalProvider amUserPrincipalProvider,
                                                        ResourceHandlerFactory resourceHandlerFactory) {
-        return new AMInternalUserService(amUserService, amPermissionService, amResourceService, amUserMapper, userHandler, resourcePermissionHandler,
-                amUserPrincipalProvider, resourceHandlerFactory);
+        return new AMInternalUserService(amUserService, amPermissionService, amResourceService, amUserMapper, userHandler,
+                resourcePermissionHandler, amUserPrincipalProvider, resourceHandlerFactory);
     }
 
     @Bean
     public AMUserController amUserController(
             AMUserMapper amUserMapper,
             AMInternalUserService amInternalUserService,
-            ListResponseEntityUtil<AMUserListResponse, AMUser> amUserListResponseEntityUtil,
+            ResponseEntityUtil<AMUsersTableDataResponse, AMUsersTableData> amUsersTableDataResponseEntityUtil,
             ResponseEntityUtil<AMUserInfoResponse, AMUserInfo> amUserInfoResponseEntityUtil) {
-        return new AMUserController(amUserMapper, amInternalUserService, amUserListResponseEntityUtil, amUserInfoResponseEntityUtil);
+        return new AMUserController(amUserMapper, amInternalUserService, amUsersTableDataResponseEntityUtil, amUserInfoResponseEntityUtil);
     }
 
     @Bean

@@ -3,9 +3,9 @@ package com.cleverpine.viravamanageacesscore.service.impl;
 import com.cleverpine.cpspringerrorutil.exception.BadRequestException;
 import com.cleverpine.viravabackendcommon.dto.Resource;
 import com.cleverpine.viravabackendcommon.dto.ResourcePermission;
-import com.cleverpine.viravabackendcommon.dto.ResourcePermissions;
 import com.cleverpine.viravabackendcommon.dto.User;
 import com.cleverpine.viravamanageacesscore.annotation.AMTransactional;
+import com.cleverpine.viravamanageacesscore.dto.AMUsersTableDataDTO;
 import com.cleverpine.viravamanageacesscore.factory.ResourceHandlerFactory;
 import com.cleverpine.viravamanageacesscore.handler.ResourcePermissionHandler;
 import com.cleverpine.viravamanageacesscore.handler.UserHandler;
@@ -47,6 +47,12 @@ public class AMInternalUserService {
         this.resourcePermissionHandler = resourcePermissionHandler;
         this.amUserPrincipalProvider = amUserPrincipalProvider;
         this.resourceHandlerFactory = resourceHandlerFactory;
+    }
+
+    public AMUsersTableDataDTO getUsersTableData() {
+        var usersTableOrder = userHandler.getUsersTableOrder();
+        var users = getAllUsers();
+        return new AMUsersTableDataDTO(usersTableOrder, users);
     }
 
     public List<User> getAllUsers() {
