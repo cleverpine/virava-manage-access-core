@@ -2,14 +2,15 @@ package com.cleverpine.viravamanageacesscore.mapper;
 
 import com.cleverpine.viravabackendcommon.dto.Permission;
 import com.cleverpine.viravabackendcommon.dto.User;
+import com.cleverpine.viravamanageacesscore.dto.AMUsersTableDataDTO;
 import com.cleverpine.viravamanageacesscore.model.AMUser;
 import com.cleverpine.viravamanageacesscore.model.AMUserInfo;
+import com.cleverpine.viravamanageacesscore.model.AMUsersTableData;
 import org.mapstruct.Mapper;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.cleverpine.viravamanageacesscore.util.AMConstants.ALL;
@@ -22,6 +23,8 @@ public interface AMUserMapper extends AMUserPermissionMapper {
     AMUserInfo userToAMUserInfo(User user);
 
     List<AMUser> userListToAMUserList(List<User> userList);
+
+    AMUsersTableData amUsersTableDataDTOToAMUsersTableData(AMUsersTableDataDTO amUsersTableDataDTO);
 
     User amUserInfoToUser(AMUserInfo userInfo);
 

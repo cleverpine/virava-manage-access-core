@@ -31,7 +31,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AMUserListResponse"
+                $ref: "#/components/schemas/AMUsersTableDataResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -586,6 +586,24 @@ components:
         displayName:
           type: string
           minLength: 1
+    AMUsersTableData:
+      type: object
+      properties:
+        usersTableOrder:
+          type: array
+          items:
+              type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AMUser'
+    AMUsersTableDataResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AMUsersTableData'
+        error:
+          $ref: '#/components/schemas/ErrorData'
   responses:
     BadRequest:
       description: "BAD REQUEST"

@@ -16,8 +16,8 @@ public class AMResponseEntityUtilConfig {
     }
 
     @Bean
-    public ListResponseEntityUtil<AMUserListResponse, AMUser> amUserListResponseEntityUtil() {
-        return new ListResponseEntityUtil<>(AMUserListResponse.class, AMUser.class);
+    public ResponseEntityUtil<AMUsersTableDataResponse, AMUsersTableData> amUsersTableDataResponseEntityUtil() {
+        return new ResponseEntityUtil<>(AMUsersTableDataResponse.class, AMUsersTableData.class);
     }
 
     @Bean
