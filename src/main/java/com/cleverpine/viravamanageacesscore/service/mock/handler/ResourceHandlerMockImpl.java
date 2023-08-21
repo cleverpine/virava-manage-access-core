@@ -33,6 +33,11 @@ public class ResourceHandlerMockImpl implements ResourceHandler<Resource> {
     }
 
     @Override
+    public List<Resource> getUserAssignedUpdatableResources(List<Long> resourceIds) {
+        return List.of(new Resource(1L, "resource1"));
+    }
+
+    @Override
     public Function<Resource, Resource> mapToResource() {
         return resource -> resource;
     }
