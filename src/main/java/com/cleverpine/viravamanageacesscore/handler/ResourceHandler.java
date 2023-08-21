@@ -25,6 +25,22 @@ public interface ResourceHandler<ResourceDTO> {
                 .toList();
     }
 
+    default List<Resource> getUpdatableResources(User user) {
+        List<ResourceDTO> resourceDTOList;
+
+        if (canAccessAllResources(user)) {
+            resourceDTOList = getAllResources();
+        } else {
+            var userResourceIds = getUserResourceIds(user);
+
+            resourceDTOList = getUserAssignedUpdatableResources(userResourceIds);
+        }
+
+        return resourceDTOList.stream()
+                .map(mapToResource())
+                .toList();
+    }
+
     boolean canAccessAllResources(User user);
 
     List<ResourceDTO> getAllResources();
@@ -32,6 +48,8 @@ public interface ResourceHandler<ResourceDTO> {
     List<Long> getUserResourceIds(User user);
 
     List<ResourceDTO> getUserAssignedResources(List<Long> resourceIds);
+
+    List<ResourceDTO> getUserAssignedUpdatableResources(List<Long> resourceIds);
 
     Function<ResourceDTO, Resource> mapToResource();
 

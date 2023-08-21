@@ -78,9 +78,10 @@ public class AMInternalUserService {
     public void deleteUser(Long id) {
         var user = amUserService.getById(id);
         var username = user.getUsername();
+        validateUserNotSelf(username);
         validateUserActionAllowed(username);
 
-        var userDeleted = userHandler.delete(username);
+        userHandler.delete(username);
         amUserService.delete(id);
     }
 
@@ -94,7 +95,7 @@ public class AMInternalUserService {
     public User updateUser(Long id, User userWithUpdates) {
         var user = amUserService.getById(id);
         var username = user.getUsername();
-        validateUserActionAllowed(username);
+        validateUpdateUserActionAllowed(username);
 
         var externalUser = userHandler.update(username, userWithUpdates);
         return amUserService.update(id, externalUser);
@@ -132,10 +133,35 @@ public class AMInternalUserService {
         }
     }
 
+    private void validateUpdateUserActionAllowed(String username) {
+        var allowedUsernames = getAllowedUpdatableUsernames();
+
+        if (!allowedUsernames.contains(username)) {
+            throw new BadRequestException(String.format("Current user not allowed to update user with username %s", username));
+        }
+    }
+
+    private void validateUserNotSelf(String username) {
+        var loggedUsername = amUserPrincipalProvider.getUsername();
+
+        if (loggedUsername.equals(username)) {
+            throw new BadRequestException("Current user cannot delete self");
+        }
+    }
+
     private Set<String> getAllowedUsernames() {
         var username = amUserPrincipalProvider.getUsername();
         var principalUser = amUserService.getByUsername(username);
         return resourceHandlerFactory.getHandler("USER").getResources(principalUser)
+                .stream()
+                .map(Resource::getName)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<String> getAllowedUpdatableUsernames() {
+        var username = amUserPrincipalProvider.getUsername();
+        var principalUser = amUserService.getByUsername(username);
+        return resourceHandlerFactory.getHandler("USER").getUpdatableResources(principalUser)
                 .stream()
                 .map(Resource::getName)
                 .collect(Collectors.toSet());
